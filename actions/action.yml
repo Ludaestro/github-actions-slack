@@ -11,14 +11,14 @@ inputs:
 
 runs:
   using: "composite"
-  env:
-    SLACK_WEBHOOK_URL: ${{ inputs.SLACK_WEBHOOK_URL }}
-    GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
   steps:
   - name: Get previous workflow status
     if: always()
     uses: Mercymeilya/last-workflow-status@v0.3
     id: last_status
+    env:
+      SLACK_WEBHOOK_URL: ${{ inputs.SLACK_WEBHOOK_URL }}
+      GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
 
   - name: Pull Request Slack Notification
     uses: 8398a7/action-slack@v3
@@ -34,6 +34,9 @@ runs:
           }]
         }
       channel: ${{ inputs.CHANNEL_ID }}
+    env:
+      SLACK_WEBHOOK_URL: ${{ inputs.SLACK_WEBHOOK_URL }}
+      GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
 
   - name: Commit Slack Notification
     uses: 8398a7/action-slack@v3
@@ -49,3 +52,6 @@ runs:
           }]
         }
       channel: ${{ inputs.CHANNEL_ID }}
+    env:
+      SLACK_WEBHOOK_URL: ${{ inputs.SLACK_WEBHOOK_URL }}
+      GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
