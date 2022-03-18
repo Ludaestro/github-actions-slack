@@ -1,12 +1,16 @@
 name: Slack Notification
 description: Notify in slack on build failure/success
+
 inputs:
   GITHUB_TOKEN:
     required: true
   SLACK_WEBHOOK_URL:
     required: true
+  CHANNEL_ID:
+    required: true
+
 runs:
-  using: composite
+  using: "composite"
   env:
     SLACK_WEBHOOK_URL: ${{ inputs.SLACK_WEBHOOK_URL }}
     GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
@@ -29,7 +33,7 @@ runs:
             text: `Repository: ${process.env.AS_REPO}\nMessage: Pull Request ${process.env.AS_COMMIT} of ${process.env.AS_PULL_REQUEST} by ${process.env.AS_AUTHOR} ${{ job.status }} in ${process.env.AS_TOOK}\nAction: ${process.env.AS_MESSAGE}`,
           }]
         }
-      channel: C02L1K0N4M9
+      channel: ${{ inputs.CHANNEL_ID }}
 
   - name: Commit Slack Notification
     uses: 8398a7/action-slack@v3
@@ -44,4 +48,4 @@ runs:
             text: `Repository: ${process.env.AS_REPO}\nMessage: Commit ${process.env.AS_COMMIT} into ${{ github.ref_name }} by ${process.env.AS_AUTHOR} ${{ job.status }} in ${process.env.AS_TOOK}\nAction: ${process.env.AS_MESSAGE}`,
           }]
         }
-      channel: C02L1K0N4M9
+      channel: ${{ inputs.CHANNEL_ID }}
