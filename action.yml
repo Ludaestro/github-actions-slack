@@ -1,0 +1,48 @@
+name: Slack Notification
+description: Notify in slack on build failure/success
+inputs:
+  GITHUB_TOKEN:
+    required: true
+  SLACK_WEBHOOK_URL:
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Get previous workflow status
+      if: always()
+      uses: Mercymeilya/last-workflow-status@v0.3
+      id: last_status
+
+    - name: Pull Request Slack Notification
+      uses: 8398a7/action-slack@v3
+      if: ${{ github.event_name == 'pull_request' && (failure() || steps.last_status.outputs.last_status == 'failure') }}
+      with:
+        status: custom
+        fields: repo,message,commit,author,action,eventName,ref,workflow,job,took,pullRequest # selectable (default: repo,message)
+        custom_payload: |
+          {
+            attachments: [{
+              color: '${{ job.status }}' === 'success' ? 'good' : '${{ job.status }}' === 'failure' ? 'danger' : 'warning',
+              text: `Repository: ${process.env.AS_REPO}\nMessage: Pull Request ${process.env.AS_COMMIT} of ${process.env.AS_PULL_REQUEST} by ${process.env.AS_AUTHOR} ${{ job.status }} in ${process.env.AS_TOOK}\nAction: ${process.env.AS_MESSAGE}`,
+            }]
+          }
+        channel: C02L1K0N4M9
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+
+    - name: Commit Slack Notification
+      uses: 8398a7/action-slack@v3
+      if: ${{ github.event_name != 'pull_request' && (failure() || steps.last_status.outputs.last_status == 'failure') }}
+      with:
+        status: custom
+        fields: repo,message,commit,author,action,eventName,ref,workflow,job,took,pullRequest # selectable (default: repo,message)
+        custom_payload: |
+          {
+            attachments: [{
+              color: '${{ job.status }}' === 'success' ? 'good' : '${{ job.status }}' === 'failure' ? 'danger' : 'warning',
+              text: `Repository: ${process.env.AS_REPO}\nMessage: Commit ${process.env.AS_COMMIT} into ${{ github.ref_name }} by ${process.env.AS_AUTHOR} ${{ job.status }} in ${process.env.AS_TOOK}\nAction: ${process.env.AS_MESSAGE}`,
+            }]
+          }
+        channel: C02L1K0N4M9
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
