@@ -8,8 +8,8 @@ inputs:
 runs:
   using: composite
   env:
-      SLACK_WEBHOOK_URL: ${{ inputs.SLACK_WEBHOOK_URL }}
-      GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
+    SLACK_WEBHOOK_URL: ${{ inputs.SLACK_WEBHOOK_URL }}
+    GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
   steps:
   - name: Get previous workflow status
     if: always()
