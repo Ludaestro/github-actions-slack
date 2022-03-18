@@ -7,6 +7,9 @@ inputs:
     required: true
 runs:
   using: composite
+  env:
+      SLACK_WEBHOOK_URL: ${{ inputs.SLACK_WEBHOOK_URL }}
+      GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
   steps:
     - name: Get previous workflow status
       if: always()
@@ -27,8 +30,6 @@ runs:
             }]
           }
         channel: C02L1K0N4M9
-      env:
-        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
 
     - name: Commit Slack Notification
       uses: 8398a7/action-slack@v3
@@ -44,5 +45,3 @@ runs:
             }]
           }
         channel: C02L1K0N4M9
-      env:
-        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
