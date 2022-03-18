@@ -1,5 +1,5 @@
-name: Slack Notification
-description: Notify in slack on build failure/success
+name: "Slack Notification"
+description: "Notify in slack on build failure/success"
 
 inputs:
   GITHUB_TOKEN:
