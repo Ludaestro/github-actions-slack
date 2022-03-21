@@ -28,7 +28,7 @@ runs:
         {
           attachments: [{
             color: '${{ job.status }}' === 'success' ? 'good' : '${{ job.status }}' === 'failure' ? 'danger' : 'warning',
-            text: `Repository: ${process.env.AS_REPO}\nMessage: Pull Request ${process.env.AS_COMMIT} of ${process.env.AS_PULL_REQUEST} by ${process.env.AS_AUTHOR} ${{ job.status }} in ${process.env.AS_TOOK}\nAction: ${process.env.AS_MESSAGE}`,
+            text: `Repository: ${process.env.AS_REPO}\nMessage: Commit ${process.env.AS_COMMIT} of Pull request ${process.env.AS_PULL_REQUEST} by ${process.env.AS_AUTHOR} ${{ job.status }} in ${process.env.AS_TOOK}\nAction: ${process.env.AS_MESSAGE}`,
           }]
         }
       channel: ${{ inputs.CHANNEL_ID }}
