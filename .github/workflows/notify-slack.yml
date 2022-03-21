@@ -1,0 +1,21 @@
+name: Reusable Notification Workflow
+
+on:
+  workflow_call:
+    secrets:
+      SLACK_WEBHOOK_URL:
+        required: true
+    inputs:
+      CHANNEL_ID:
+        required: true
+
+jobs:
+
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ludaestro/github-actions-slack/actions@main
+        with:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CHANNEL_ID: ${{ inputs.CHANNEL_ID }}
