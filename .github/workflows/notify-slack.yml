@@ -9,11 +9,10 @@ on:
         required: true
 
 jobs:
-
   notify:
     runs-on: ubuntu-latest
     steps:
-      - uses: ludaestro/github-actions-slack/actions@main
+      - uses: Ludaestro/github-actions-slack/actions@main
         with:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
